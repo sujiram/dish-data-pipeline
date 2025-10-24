@@ -9,8 +9,7 @@ import config_file as cf
 import argparse  
   
 def main(run_type="full"):  
-    endpoints = cf.ENDPOINTS  
-    # ... rest of your code, replacing the hardcoded endpoints dict ...  
+    endpoints = cf.ENDPOINTS   
     for name, endpoint in endpoints.items():
         try:
             records, source_files = fetch_paginated_data(endpoint, name, bucket) 
