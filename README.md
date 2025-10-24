@@ -1,4 +1,3 @@
-# 📊 DISH Data Engineer Technical Assessment
 
 ## 🧾 Expected Deliverables Overview
 
