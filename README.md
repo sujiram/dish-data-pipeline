@@ -129,19 +129,17 @@ Use the DAG file `dags/etl_google_analytics_dag.py`.
 
 ---
 
-## 🧮 Sample Output (Included in `sample_output.zip`)
+## 🧮 Sample Output 
+sample_output/ load_audit.csv
 
-```
-sample_output/
-├── raw_api_data/
-│   ├── daily_visits/
-│   └── ga_sessions/
-├── tgt_daily_visits.csv
-├── tgt_ga_sessions.csv
-└── load_audit.csv
-```
+<img width="622" height="235" alt="image" src="https://github.com/user-attachments/assets/2081edd5-55f1-4ca2-8c55-5fd040757140" />
+<img width="626" height="307" alt="image" src="https://github.com/user-attachments/assets/88edc80c-096a-4e49-967d-ba3e9f1b99b2" />
+<img width="602" height="236" alt="image" src="https://github.com/user-attachments/assets/6b1c8ac9-59ae-486b-a507-d2dc7adf88cd" />
+<img width="612" height="242" alt="image" src="https://github.com/user-attachments/assets/c89bda1b-464b-4c0c-becf-1ec8e6eb2145" />
+<img width="635" height="238" alt="image" src="https://github.com/user-attachments/assets/8a844994-c38a-4b1b-be78-caca5cd59427" />
+<img width="623" height="242" alt="image" src="https://github.com/user-attachments/assets/d20fbfbe-8f52-4cca-9406-0f08cdd5c784" />
 
-### Example — `load_audit.csv`
+Example — `load_audit.csv`
 | table_name     | record_count | status   | load_timestamp       | source_files |
 |----------------|---------------|----------|----------------------|---------------|
 | daily_visits   | 367           | SUCCESS  | 2025-10-22 18:30:00Z | raw_api_data/daily_visits/... |
