@@ -5,44 +5,7 @@ import pandas as pd
 from pandas import json_normalize
 from google.cloud import bigquery, storage
 import config_file as cf
-
 import argparse  
-  
-def main(run_type="full"):  
-    endpoints = cf.ENDPOINTS   
-    for name, endpoint in endpoints.items():
-        try:
-            records, source_files = fetch_paginated_data(endpoint, name, bucket) 
-            df = flatten_and_clean(name, records)
-            valid, dq_issues = run_data_quality_checks(df, name)
-            if not valid:
-                if any("duplicate" in issue for issue in dq_issues):
-                    print(f" Duplicates found for {name}, removing and continuing load.")
-                    if name == "ga_sessions":
-                        df = df.drop_duplicates(subset=["visitId", "source_file"])
-                    elif name == "daily_visits":
-                        df = df.drop_duplicates(subset=["visit_date", "source_file"])
-                else:
-                    log_audit(name, len(df), f"FAILED: Data Quality – {dq_issues}", source_files)
-                    print(f" Skipping load for {name} due to data quality issues.")
-                    continue
-            load_to_staging(df, name)
-            upsert_to_final(name)
-            log_audit(name, len(df), "SUCCESS",source_files) 
-        except Exception as e:
-            print(f" Error processing {name}: {e}")
-            try:
-                log_audit(name, 0, f"FAILED: {str(e)}",source_files ) 
-            except Exception as audit_e:
-                print(f" Failed to write failure audit: {audit_e}")
-        print("-" * 80)
-  
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser() 
-    parser.add_argument('--run_type', default='full', help='Type of run: full or test') 
-    args = parser.parse_args() 
-    main(run_type=args.run_type)
-
 # Initialize clients explicitly with project from config
 bq_client = bigquery.Client(project=cf.PROJECT_ID)
 try:
@@ -276,3 +239,40 @@ def log_audit(table_name, record_count, status, source_files):
         print(f" Audit logged for {table_name}")
     except Exception as e:
         print(f" Failed to log audit for {table_name}: {e}")
+
+
+def main(run_type="full"):  
+    endpoints = cf.ENDPOINTS   
+    for name, endpoint in endpoints.items():
+        try:
+            records, source_files = fetch_paginated_data(endpoint, name, bucket) 
+            df = flatten_and_clean(name, records)
+            valid, dq_issues = run_data_quality_checks(df, name)
+            if not valid:
+                if any("duplicate" in issue for issue in dq_issues):
+                    print(f" Duplicates found for {name}, removing and continuing load.")
+                    if name == "ga_sessions":
+                        df = df.drop_duplicates(subset=["visitId", "source_file"])
+                    elif name == "daily_visits":
+                        df = df.drop_duplicates(subset=["visit_date", "source_file"])
+                else:
+                    log_audit(name, len(df), f"FAILED: Data Quality – {dq_issues}", source_files)
+                    print(f" Skipping load for {name} due to data quality issues.")
+                    continue
+            load_to_staging(df, name)
+            upsert_to_final(name)
+            log_audit(name, len(df), "SUCCESS",source_files) 
+        except Exception as e:
+            print(f" Error processing {name}: {e}")
+            try:
+                log_audit(name, 0, f"FAILED: {str(e)}",source_files ) 
+            except Exception as audit_e:
+                print(f" Failed to write failure audit: {audit_e}")
+        print("-" * 80)
+  
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser() 
+    parser.add_argument('--run_type', default='full', help='Type of run: full or test') 
+    args = parser.parse_args() 
+    main(run_type=args.run_type)
+
