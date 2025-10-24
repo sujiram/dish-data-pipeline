@@ -6,6 +6,7 @@ from pandas import json_normalize
 from google.cloud import bigquery, storage
 import config_file as cf
 import argparse  
+
 # Initialize clients explicitly with project from config
 bq_client = bigquery.Client(project=cf.PROJECT_ID)
 try:
