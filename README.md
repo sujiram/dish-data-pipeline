@@ -6,7 +6,7 @@
 | **`data_pipeline.py`** | Main extraction, transformation, and loading (ETL) script. It fetches paginated API data, performs cleaning, applies data quality checks, and loads into BigQuery. |
 | **`requirements.txt`** | List of Python dependencies required to execute the pipeline locally or via Docker/Airflow. |
 | **`README.md`** | Project documentation containing setup, execution, and validation instructions. |
-| **Sample Output Files** | Example API extraction results saved in GCS (`raw_api_data/...`) and local compressed file (`sample_output.zip`). |
+| **Sample Output Files** | Example API extraction results saved in GCS (`raw_api_data/...`) and sample output screenshots attached |
 | **Populated BigQuery Tables / CSVs** | Final target tables: `tgt_daily_visits`, `tgt_ga_sessions`, and audit log `load_audit`. Equivalent CSVs provided if BigQuery access is restricted. |
 
 ---
